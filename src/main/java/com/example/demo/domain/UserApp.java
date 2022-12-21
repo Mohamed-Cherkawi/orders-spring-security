@@ -10,19 +10,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
-@Entity @Setter
-@NoArgsConstructor
+@Entity @Setter @NoArgsConstructor
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
-public class UserApp implements Serializable , UserDetails {
+public abstract class UserApp implements Serializable , UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
     private String password;
+    @OneToMany
+    private List<Role> roles;
     @Transient
     private Set<? extends GrantedAuthority> grantedAuthorities;
     private boolean isAccountNonExpired = true;
