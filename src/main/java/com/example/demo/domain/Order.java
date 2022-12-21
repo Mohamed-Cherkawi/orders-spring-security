@@ -3,8 +3,16 @@ package com.example.demo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,7 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
+@Entity @NoArgsConstructor
 @Table(name = "customer_order")
 public class Order implements Serializable {
     @Id
@@ -35,9 +43,6 @@ public class Order implements Serializable {
         this.createdAt = createdAt;
         this.totalPrice = totalPrice;
         this.orderItems = orderItems;
-    }
-
-    public Order() {
     }
 
     public UUID getUuid() {
