@@ -7,9 +7,9 @@ import java.util.List;
 @Service
 public interface ServiceInterface<T,D,L> {
 
-    D save(D object);
+    void save(D object);
     T findById(L id);
-    List<T> getAll();
-    void update(D object);
+    List<D> getAll();
+    void update(L id,D object);
     void delete(Long id);
 }
