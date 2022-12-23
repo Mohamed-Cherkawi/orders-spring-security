@@ -1,6 +1,14 @@
 package com.example.demo.domain;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,21 +18,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity @Setter @NoArgsConstructor
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 
-public abstract class UserApp implements Serializable , UserDetails {
+public class UserApp implements Serializable , UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String username;
     private String password;
-    @OneToMany
-    private List<Role> roles;
+    @ManyToOne
+    private Role role;
     @Transient
     private Set<? extends GrantedAuthority> grantedAuthorities;
     private boolean isAccountNonExpired = true;
@@ -32,25 +39,13 @@ public abstract class UserApp implements Serializable , UserDetails {
     private boolean isCredentialsNonExpired = true;
     private boolean isEnabled = true;
 
-    public UserApp(String username, String password,
-                   Set<? extends GrantedAuthority> grantedAuthorities,
-                   boolean isAccountNonExpired,
-                   boolean isAccountNonLocked,
-                   boolean isCredentialsNonExpired,
-                   boolean isEnabled) {
 
+    public UserApp(String username, String password,Role role) {
         this.username = username;
         this.password = password;
-        this.grantedAuthorities = grantedAuthorities;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
-    }
+        this.role = role;
 
-    public UserApp(String username, String password) {
-        this.username = username;
-        this.password = password;
+        grantedAuthorities = role.getName().getGrantedAuthorities();
     }
 
     public Long getId() {
@@ -61,6 +56,7 @@ public abstract class UserApp implements Serializable , UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return grantedAuthorities;
     }
+
 
     @Override
     public String getPassword() {
