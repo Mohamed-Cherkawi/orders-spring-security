@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.config.jwt.JwtConfig;
 import com.example.demo.config.jwt.JwtTokenVerifier;
 import com.example.demo.config.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.example.demo.service.ApplicationUserService;
@@ -24,7 +23,6 @@ import javax.crypto.SecretKey;
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationUserService applicationUserService;
-    private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
 
 
@@ -35,8 +33,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //method is used to configure the session management policy for the application which specifies that the application should not create any server-side sessions.
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),jwtConfig,secretKey)) // method is used to add custom filters to the filter chain for an application and this filter will apply for each request and response
-                .addFilterAfter(new JwtTokenVerifier(secretKey,jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),secretKey)) // method is used to add custom filters to the filter chain for an application and this filter will apply for each request and response
+                .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated();
@@ -44,7 +42,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
