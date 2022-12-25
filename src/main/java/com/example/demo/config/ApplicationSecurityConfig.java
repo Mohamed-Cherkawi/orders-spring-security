@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKey;
 
+import static com.example.demo.enums.RoleEnum.*;
+
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
@@ -36,6 +38,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(),secretKey)) // method is used to add custom filters to the filter chain for an application and this filter will apply for each request and response
                 .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/api/product/**").hasAnyRole(ADMIN.name(), SUPPLIER.name())
+                .antMatchers("/api/v1/order").hasRole(CLIENT.name())
                 .anyRequest()
                 .authenticated();
 
@@ -46,7 +50,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
-    //The AuthenticationProvider interface is a strategy interface used by the Spring Security framework to authenticate users. An AuthenticationProvider implementation is responsible for verifying the authenticity of a user's credentials and returning an Authentication object if the credentials are valid.
+    /*The AuthenticationProvider interface is a strategy interface used by the Spring Security framework to authenticate users.
+     An AuthenticationProvider implementation is responsible for verifying the authenticity of a user's credentials and returning
+     an Authentication object if the credentials are valid.*/
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
