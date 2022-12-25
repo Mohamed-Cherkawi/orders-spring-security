@@ -3,21 +3,22 @@ package com.example.demo.service;
 
 import com.example.demo.domain.Order;
 import com.example.demo.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
-@Service
+@Service @AllArgsConstructor
 public class OrderService {
-
-    @Autowired
     OrderRepository orderRepository;
-
-    @Autowired
     OrderItemService orderItemService;
+
+
+    public List<Order> getAllOrders(){
+        return orderRepository.findAll();
+    }
     public Order save(Order order){
         order.setUuid(UUID.randomUUID());
         order.setCreatedAt(LocalDateTime.now());
