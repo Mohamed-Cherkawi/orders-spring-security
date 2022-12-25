@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/product")
 public class ProductController {
     private static final Logger logger = Logger.getLogger(ProductController.class.getName());
     ServiceInterface<Product, ProductDto,Long> service ;
@@ -30,12 +30,12 @@ public class ProductController {
         this.service = service;
     }
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<ProductDto> getAllProducts(){
         logger.log(Level.INFO,"Looking for all the products");
         return service.getAll();
     }
-    @PostMapping("/product")
+    @PostMapping("/new")
     public ProductDto saveProduct(@RequestBody ProductDto product ){
         logger.log(Level.INFO,"Saving Product");
         service.save(product);
@@ -44,7 +44,7 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/product/{reference}")
+    @DeleteMapping("/delete/{reference}")
     public String deleteProductById(@PathVariable("reference") Long id){
         service.delete(id);
         logger.log(Level.FINE,"Deleted Successfully");
@@ -52,7 +52,7 @@ public class ProductController {
 
     }
 
-    @PutMapping("/product/{reference}")
+    @PutMapping("/update/{reference}")
     public ProductDto updateProduct(@PathVariable("reference") Long id,@RequestBody ProductDto productDto){
          logger.log(Level.INFO,"Updating product ...");
          service.update(id,productDto);

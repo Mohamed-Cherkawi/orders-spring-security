@@ -14,16 +14,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController @AllArgsConstructor
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1/order")
 public class OrderResource {
 
     OrderService orderService;
 
-    @GetMapping
+    @GetMapping("/")
     public List<Order> showAllOrders(){
        return orderService.getAllOrders();
     }
-    @PostMapping("/create-new-order") @ResponseBody
+    @PostMapping("/new") @ResponseBody
     public Order save(@RequestBody @Valid Order order) {
         return orderService.save(order);
     }
