@@ -8,7 +8,7 @@ import javax.crypto.SecretKey;
 
 @Configuration
 public class JwtSecretKey {
-    @Bean // This method is is used to create a secret key using an SHA1 algorithm
+    @Bean // This method is a utility method provided by the Spring Security framework that generates a secret key for use in HMAC operations.
     public SecretKey secretKey(){
         return Keys.hmacShaKeyFor(JwtConfig.SECRET_KEY.getBytes());
     }
