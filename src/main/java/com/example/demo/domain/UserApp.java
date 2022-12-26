@@ -22,7 +22,7 @@ import java.util.Set;
 
 @Entity @Setter @NoArgsConstructor
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 
 public class UserApp implements Serializable , UserDetails {
     @Id
@@ -44,8 +44,6 @@ public class UserApp implements Serializable , UserDetails {
         this.username = username;
         this.password = password;
         this.role = role;
-
-        grantedAuthorities = role.getName().getGrantedAuthorities();
     }
 
     public Long getId() {
@@ -66,6 +64,10 @@ public class UserApp implements Serializable , UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     @Override
