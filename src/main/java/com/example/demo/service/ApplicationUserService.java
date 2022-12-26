@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.domain.UserApp;
+import com.example.demo.enums.RoleEnum;
 import com.example.demo.repository.ApplicationUserDaoImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,10 +22,15 @@ public class ApplicationUserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return applicationUserDao
+        UserApp user = applicationUserDao
                 .selectApplicationUserByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(String.format("Username %s not found", username))
                 );
+
+        RoleEnum userRole =  user.getRole().getName();
+
+        user.setGrantedAuthorities(userRole.getGrantedAuthorities());
+        return user;
     }
 }
