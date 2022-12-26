@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.domain.Role;
-import com.example.demo.domain.UserApp;
+import com.example.demo.domain.*;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -32,11 +31,10 @@ public class TempData {
         roleRepository.saveAll(List.of(role1,role2,role3));
 
         // Creating some roles
-        UserApp user1 = new UserApp("coder2002",passwordEncoder.encode("pass123"),role1);
-        UserApp user2 = new UserApp("Sara",passwordEncoder.encode("sarasara"),role3);
-        UserApp user3 = new UserApp("Sanfour",passwordEncoder.encode("sanfour123"),role2);
+        UserApp user1 = new Admin("coder2002@",passwordEncoder.encode("pass123"),role1);
+        UserApp user2 = new Client("SaraX@",passwordEncoder.encode("sarasara"),role3);
+        UserApp user3 = new Supplier("Sanfour#%",passwordEncoder.encode("sanfour123"),role2);
 
         userRepository.saveAll(List.of(user1,user2,user3));
-
     }
 }
