@@ -19,7 +19,10 @@ import java.util.Date;
 
 @AllArgsConstructor
 public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthenticationManager authenticationManager; // the AuthenticationManager interface is an important part of the Spring Security framework and is used to manage the authentication of users in an application.
+
+    // the AuthenticationManager interface is an important part of the Spring Security framework
+    // and is used to manage the authentication of users in an application.
+    private final AuthenticationManager authenticationManager;
     private final SecretKey secretKey;
 
     @Override
@@ -27,7 +30,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         try {
             UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper() // The object Mapper reads the value from the input stream and then puts it into that UserAndPassAUthReq class
                     .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class); // the readValue method  deserializes a JSON string to a Java object.
-            Authentication authentication = new UsernamePasswordAuthenticationToken( // usernamePasswordAuthenticationToken is a useful class for representing authenticated users in a Java application
+
+            // usernamePasswordAuthenticationToken is a useful class for representing authenticated users in a Java application
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getUsername(),
                     authenticationRequest.getPassword()
             );
