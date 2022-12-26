@@ -39,10 +39,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(new JwtTokenVerifier(secretKey), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/api/product/**").hasAnyRole(ADMIN.name(), SUPPLIER.name())
-                .antMatchers("/api/v1/order").hasRole(CLIENT.name())
+                .antMatchers("/api/v1/order/**").hasRole(CLIENT.name())
                 .anyRequest()
                 .authenticated();
-
     }
 
     @Override
